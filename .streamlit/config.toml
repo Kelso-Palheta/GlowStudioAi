@@ -1,0 +1,20 @@
+[theme]
+# Tema Premium Light (Semijoias)
+primaryColor = "#D4AF37"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#FDFBF9"
+textColor = "#1A1A1A"
+base = "light"
+font = "sans serif"
+
+[server]
+headless = true
+port = 8501
+enableXsrfProtection = true
+maxUploadSize = 10
+
+[browser]
+gatherUsageStats = false
+
+[client]
+toolbarMode = "viewer"

@@ -1,0 +1,11 @@
+# ============================================
+# GlowStudio AI - Dependências Python
+# ============================================
+# Versões fixas para reprodutibilidade.
+# Somente bibliotecas aprovadas no Documento Mestre (Seção 2.2).
+
+streamlit==1.45.1
+requests==2.32.3
+python-dotenv==1.1.0
+Pillow==11.1.0
+supabase>=2.4.0

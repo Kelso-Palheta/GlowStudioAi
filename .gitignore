@@ -1,0 +1,54 @@
+# ============================================
+# GlowStudio AI - .gitignore
+# ============================================
+
+# --- Ambiente e Secrets ---
+.env
+.env.local
+.env.production
+.env.staging
+.streamlit/secrets.toml
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# --- Virtual Environment ---
+venv/
+.venv/
+env/
+ENV/
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# --- Docker ---
+docker-compose.override.yml
+
+# --- Logs ---
+*.log
+logs/
+
+# --- Uploads temporários ---
+uploads/
+temp/
+
+# --- n8n ---
+n8n_data/database.sqlite
+n8n_data/database.sqlite-shm
+n8n_data/database.sqlite-wal
+
+# --- OS ---
+Thumbs.db
+.DS_Store

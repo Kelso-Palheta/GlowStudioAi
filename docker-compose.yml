@@ -1,0 +1,82 @@
+# ============================================
+# GlowStudio AI - Docker Compose
+# ============================================
+# Orquestração: Streamlit App + Nginx (proxy reverso)
+
+services:
+  # --- Aplicação Streamlit ---
+  glowstudio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: glowstudio-app
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8501:8501"
+    networks:
+      - glowstudio-net
+    volumes:
+      - ./src:/app/src
+      - ./.streamlit:/app/.streamlit
+      - ./app.py:/app/app.py
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8501/_stcore/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  # --- Nginx (Proxy Reverso) ---
+  nginx:
+    image: nginx:1.24-alpine
+    container_name: glowstudio-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certbot/conf:/etc/letsencrypt:ro
+      - ./certbot/www:/var/www/certbot:ro
+    depends_on:
+      glowstudio:
+        condition: service_healthy
+    networks:
+      - glowstudio-net
+
+  # --- Certbot (SSL - ativar no deploy produção) ---
+  certbot:
+    image: certbot/certbot
+    container_name: glowstudio-certbot
+    profiles: ["production"]  # Só sobe com: docker compose --profile production up
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+  # --- n8n Orquestrador (Produção) ---
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: glowstudio-n8n
+    restart: unless-stopped
+    environment:
+      - N8N_HOST=${N8N_DOMAIN:-localhost}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - NODE_ENV=production
+      - WEBHOOK_URL=https://${N8N_DOMAIN:-localhost}/
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - glowstudio-net
+
+networks:
+  glowstudio-net:
+    driver: bridge
+
+volumes:
+  n8n_data:
+    driver: local

@@ -1,0 +1,239 @@
+/* ============================================
+   GlowStudio AI - Global Styles
+   ============================================
+   Design System: Gold + Silk Pearl
+   Mode: Luxury Boutique Edition (Jewelry)
+   ============================================ */
+
+/* --- Google Fonts --- */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* --- CSS Variables (Design Tokens) --- */
+:root {
+    --primary: #D4AF37; 
+    --primary-dark: #B08D26;
+    --primary-light: #F5E6D3;
+    --primary-glow: rgba(212, 175, 55, 0.15);
+
+    --accent-gold: #D4AF37;
+    --accent-champagne: #F5E6D3;
+    --accent-silver: #E0E0E0;
+
+    --bg-dark: #FAF8F5; 
+    --bg-card: #FFFFFF;
+    --bg-card-hover: #FCF9F5;
+    --bg-input: #FFFFFF;
+
+    --text-primary: #1A1A1A;
+    --text-secondary: #3D3D3D;
+    --text-muted: #8E8E8E;
+
+    --success: #27AE60;
+    --error: #C0392B;
+    --warning: #D35400;
+
+    --radius-sm: 4px; 
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 0px;
+
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.08);
+    --shadow-glow: 0 0 15px var(--primary-glow);
+
+    --transition-normal: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Global Reset & Spacing Fix --- */
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif !important;
+    background-color: var(--bg-dark) !important;
+}
+
+/* REDUÇÃO SUPREMA DE TOPO - STREAMLIT 1.45.1 */
+.stAppViewMain, .stMain, [data-testid="stAppViewBlockContainer"], .block-container {
+    padding-top: 0 !important;
+    margin-top: -10.5rem !important; /* Valor aumentado para zerar o topo */
+}
+
+div.block-container {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+header, [data-testid="stHeader"], .stAppHeader {
+    display: none !important;
+    height: 0 !important;
+    width: 0 !important;
+}
+
+/* Sidebar Custom Appearance */
+[data-testid="stSidebar"] {
+    background-color: #F8F5F0 !important;
+    border-right: 1px solid rgba(212, 175, 55, 0.1) !important;
+}
+
+[data-testid="stSidebarContent"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+}
+
+/* Custom Menu Links (Manual Navigation) */
+div[data-testid="stSidebarContent"] .stPageLink {
+    padding: 2px 20px !important;
+    background: transparent !important;
+}
+
+div[data-testid="stSidebarContent"] .stPageLink button {
+    background: transparent !important;
+    border: none !important;
+    padding: 10px 15px !important;
+    width: 100% !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
+}
+
+div[data-testid="stSidebarContent"] .stPageLink button:hover {
+    background: rgba(212, 175, 55, 0.08) !important;
+}
+
+div[data-testid="stSidebarContent"] .stPageLink button p {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+    color: var(--text-primary) !important;
+}
+
+/* Branding Styles */
+.sidebar-brand {
+    padding: 30px 20px 20px !important;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.05);
+    margin-bottom: 10px !important;
+}
+
+.brand-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--text-primary) !important;
+    letter-spacing: -0.03em;
+}
+
+.brand-tagline {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+/* Feature Cards & Layout */
+h1, h2, h3 {
+    font-family: 'Playfair Display', serif !important;
+}
+
+.hero-title {
+    font-size: 4rem !important;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.hero-highlight {
+    color: var(--primary);
+    font-style: italic;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Clean Tabs (Login) */
+[data-testid="stTabs"] {
+    margin-top: -2rem !important;
+}
+
+[data-testid="stTabs"] button p {
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+}
+
+/* Footer & Utils */
+footer { visibility: hidden !important; }
+#MainMenu { visibility: hidden !important; }
+
+/* Progress Header Barra de Etapas */
+.progress-bar-container {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin: 0 auto 3.5rem !important;
+    width: 100% !important;
+    max-width: 800px !important;
+}
+
+.progress-step {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    flex: 1 !important;
+    position: relative !important;
+}
+
+.step-circle {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    background: white !important;
+    border: 1px solid var(--accent-champagne) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1rem !important;
+    margin-bottom: 8px !important;
+    z-index: 2 !important;
+    transition: all var(--transition-normal) !important;
+}
+
+.progress-step.active .step-circle {
+    border-color: var(--primary) !important;
+    box-shadow: var(--shadow-glow) !important;
+    transform: scale(1.1) !important;
+}
+
+.progress-step.completed .step-circle {
+    border-color: var(--success) !important;
+    background: rgba(39, 174, 96, 0.05) !important;
+}
+
+.step-label {
+    font-size: 0.65rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.12em !important;
+    color: var(--text-muted) !important;
+    text-transform: uppercase !important;
+}
+
+.progress-step.active .step-label {
+    color: var(--primary) !important;
+}
+
+.step-connector {
+    flex: 1 !important;
+    height: 1px !important;
+    background: rgba(212, 175, 55, 0.1) !important;
+    margin-top: -24px !important; /* Alinhamento com o centro dos círculos */
+    z-index: 1 !important;
+}
+
+.step-connector.completed {
+    background: var(--primary) !important;
+}
