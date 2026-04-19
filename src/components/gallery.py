@@ -9,7 +9,16 @@ botões de download e ação por imagem.
 """
 
 import streamlit as st
+import requests as _requests
 from typing import List, Dict, Any, Optional, Callable
+
+
+@st.cache_data(show_spinner=False)
+def _fetch_image_bytes(url: str) -> bytes:
+    """Downloads image bytes from a URL, cached to avoid re-fetching on rerun."""
+    resp = _requests.get(url, timeout=15)
+    resp.raise_for_status()
+    return resp.content
 
 
 def render_gallery(
@@ -61,12 +70,17 @@ def render_gallery(
                 container = btn_cols[btn_idx] if btn_cols else st
                 with container:
                     img_bytes = img_data.get("bytes", b"")
+                    if not img_bytes and img_data.get("url"):
+                        try:
+                            img_bytes = _fetch_image_bytes(img_data["url"])
+                        except Exception:
+                            img_bytes = b""
                     if img_bytes:
                         st.download_button(
                             "📥 Download",
                             data=img_bytes,
-                            file_name=f"glowstudio_{idx + 1}.png",
-                            mime="image/png",
+                            file_name=f"glowstudio_{idx + 1}.jpg",
+                            mime="image/jpeg",
                             key=f"gallery_dl_{idx}",
                             use_container_width=True,
                         )
