@@ -56,27 +56,6 @@ services:
       - ./certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
-  # --- n8n Orquestrador (Produção) ---
-  n8n:
-    image: n8nio/n8n:latest
-    container_name: glowstudio-n8n
-    restart: unless-stopped
-    environment:
-      - N8N_HOST=${N8N_DOMAIN:-localhost}
-      - N8N_PORT=5678
-      - N8N_PROTOCOL=https
-      - NODE_ENV=production
-      - WEBHOOK_URL=https://${N8N_DOMAIN:-localhost}/
-      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
-    volumes:
-      - n8n_data:/home/node/.n8n
-    networks:
-      - glowstudio-net
-
 networks:
   glowstudio-net:
     driver: bridge
-
-volumes:
-  n8n_data:
-    driver: local

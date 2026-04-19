@@ -101,7 +101,7 @@ with col_text:
                     st.session_state["prompt_visual"] = ""
                     st.rerun()
                 
-                st.info("💡 Dica: Verifique se o orquestrador n8n está rodando ou se as URLs no arquivo .env estão corretas.")
+                st.info("💡 Dica: Verifique se MARITACA_API_KEY está configurada corretamente no arquivo .env.")
                 st.stop()
 
     legenda = st.text_area(
