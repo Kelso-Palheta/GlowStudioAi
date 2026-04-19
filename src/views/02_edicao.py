@@ -75,13 +75,15 @@ with col_text:
     st.markdown("### 📝 Legenda de Vendas")
     st.caption("Gerada pela Maritaca AI — edite livremente")
 
-    # Geração automática caso não exista (Skill 1 + 2)
+    # Geração automática caso não exista
     if not st.session_state.get("legenda_gerada"):
         with st.spinner("🧠 Maritaca AI desenhando sua estratégia..."):
             payload = {
                 "objetivo": st.session_state["objetivo"],
                 "publico": st.session_state["publico"],
                 "diferenciais": st.session_state["diferenciais"],
+                "cenario": st.session_state.get("cenario", ""),
+                "look": st.session_state.get("look", ""),
                 "image_base64": st.session_state.get("uploaded_image_base64", "")
             }
             from src.services.n8n_client import n8n_client
@@ -136,10 +138,50 @@ with col_text:
         st.session_state["prompt_visual"] = ""
         st.rerun()
 
-# === Coluna Direita: Preview da Imagem ===
+# === Coluna Direita: Direção de Arte ===
 with col_preview:
-    st.markdown("### 📷 Imagem Original")
+    st.markdown("### 🎬 Direção de Arte")
 
+    cenario = st.selectbox(
+        "🌆 Cenário",
+        options=["", "Estúdio Branco", "Mansão de Luxo", "Natureza / Jardim",
+                 "Escritório Moderno", "Praia Paradisíaca", "Centro Urbano"],
+        index=["", "Estúdio Branco", "Mansão de Luxo", "Natureza / Jardim",
+               "Escritório Moderno", "Praia Paradisíaca", "Centro Urbano"].index(
+            st.session_state.get("cenario", "")
+        ) if st.session_state.get("cenario", "") in [
+            "", "Estúdio Branco", "Mansão de Luxo", "Natureza / Jardim",
+            "Escritório Moderno", "Praia Paradisíaca", "Centro Urbano"
+        ] else 0,
+        key="select_cenario",
+        help="Ambiente onde a modelo será fotografada",
+    )
+    if cenario != st.session_state.get("cenario", ""):
+        st.session_state["cenario"] = cenario
+        st.session_state["legenda_gerada"] = ""
+        st.session_state["prompt_visual"] = ""
+
+    look = st.selectbox(
+        "👗 Look / Roupa",
+        options=["", "Vestido de Seda", "Look Executivo", "Casual Elegante",
+                 "Noite de Gala", "Estilo Minimalista", "Athleisure Luxo"],
+        index=["", "Vestido de Seda", "Look Executivo", "Casual Elegante",
+               "Noite de Gala", "Estilo Minimalista", "Athleisure Luxo"].index(
+            st.session_state.get("look", "")
+        ) if st.session_state.get("look", "") in [
+            "", "Vestido de Seda", "Look Executivo", "Casual Elegante",
+            "Noite de Gala", "Estilo Minimalista", "Athleisure Luxo"
+        ] else 0,
+        key="select_look",
+        help="Roupa que a modelo irá vestir na foto",
+    )
+    if look != st.session_state.get("look", ""):
+        st.session_state["look"] = look
+        st.session_state["legenda_gerada"] = ""
+        st.session_state["prompt_visual"] = ""
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("### 📷 Joia Original")
     if has_uploaded_image():
         st.image(
             st.session_state["uploaded_image"],
@@ -147,7 +189,6 @@ with col_preview:
             use_container_width=True,
         )
 
-    # Resumo da configuração da Tela 1
     st.markdown(
         f"""
         <div class="config-summary compact">

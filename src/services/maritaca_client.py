@@ -36,22 +36,48 @@ _PUBLICO_STYLE = {
 }
 
 
-def _build_user_prompt(objetivo: str, publico: str, diferenciais: List[str]) -> str:
+_CENARIO_EN = {
+    "Estúdio Branco": "clean white studio background, soft box lighting",
+    "Mansão de Luxo": "luxury mansion interior, marble floors, elegant decor",
+    "Natureza / Jardim": "lush garden, natural sunlight, soft bokeh background",
+    "Escritório Moderno": "modern upscale office, glass and steel, city view",
+    "Praia Paradisíaca": "tropical beach, golden hour light, crystal water",
+    "Centro Urbano": "upscale urban street, city lights, modern architecture",
+}
+
+_LOOK_EN = {
+    "Vestido de Seda": "elegant silk dress, flowing fabric",
+    "Look Executivo": "tailored blazer, executive professional attire",
+    "Casual Elegante": "smart casual outfit, refined simplicity",
+    "Noite de Gala": "evening gown, glamorous formal wear",
+    "Estilo Minimalista": "minimalist all-white outfit, clean lines",
+    "Athleisure Luxo": "luxury athleisure wear, premium sportswear",
+}
+
+
+def _build_user_prompt(
+    objetivo: str, publico: str, diferenciais: List[str],
+    cenario: str = "", look: str = ""
+) -> str:
     diferenciais_str = ", ".join(diferenciais) if diferenciais else "alta qualidade artesanal"
     tone = _OBJETIVO_TONE.get(objetivo, objetivo)
     style = _PUBLICO_STYLE.get(publico, publico)
+    cenario_en = _CENARIO_EN.get(cenario, cenario or "professional studio")
+    look_en = _LOOK_EN.get(look, look or "elegant outfit")
 
     return f"""Crie conteúdo para uma semijoia com as seguintes características:
 - Objetivo: {objetivo} ({tone})
 - Público-alvo: {publico} ({style})
 - Diferenciais: {diferenciais_str}
+- Cenário: {cenario or "Estúdio"}
+- Look/Roupa: {look or "Elegante"}
 
 Retorne JSON com:
 1. "legenda": texto persuasivo para Instagram/WhatsApp (máx 300 caracteres + hashtags)
 2. "prompt_visual": prompt em inglês para Fal.ai (modelo fotorrealista vestindo a joia)
 
 Formato do prompt_visual:
-"[descrição da modelo: etnia, idade, expressão, cabelo] wearing [descrição da joia], [cenário], [iluminação de estúdio], photorealistic, 8k, commercial photography"
+"Elegant Brazilian woman wearing [descrição da joia], {look_en}, {cenario_en}, photorealistic, 8k, commercial jewelry photography, professional lighting"
 """
 
 
@@ -61,9 +87,12 @@ class MaritacaClient:
         self.model = settings.MARITACA_MODEL
         self.timeout = 30
 
-    def generate_content(self, objetivo: str, publico: str, diferenciais: List[str]) -> Dict[str, Any]:
+    def generate_content(
+        self, objetivo: str, publico: str, diferenciais: List[str],
+        cenario: str = "", look: str = ""
+    ) -> Dict[str, Any]:
         if not self.api_key:
-            return self._mock(objetivo, publico, diferenciais)
+            return self._mock(objetivo, publico, diferenciais, cenario, look)
 
         headers = {
             "Content-Type": "application/json",
@@ -73,7 +102,7 @@ class MaritacaClient:
             "model": self.model,
             "messages": [
                 {"role": "system", "content": _SYSTEM_PROMPT},
-                {"role": "user", "content": _build_user_prompt(objetivo, publico, diferenciais)},
+                {"role": "user", "content": _build_user_prompt(objetivo, publico, diferenciais, cenario, look)},
             ],
             "temperature": 0.8,
             "max_tokens": 600,
@@ -103,10 +132,15 @@ class MaritacaClient:
             logger.error(f"Erro na Maritaca AI: {e}")
             return {"success": False, "error": str(e)}
 
-    def _mock(self, objetivo: str, publico: str, diferenciais: List[str]) -> Dict[str, Any]:
+    def _mock(
+        self, objetivo: str, publico: str, diferenciais: List[str],
+        cenario: str = "", look: str = ""
+    ) -> Dict[str, Any]:
         logger.info("Maritaca AI: modo mock ativo (MARITACA_API_KEY não configurada)")
         time.sleep(1)
         dif = ", ".join(diferenciais) if diferenciais else "alta qualidade"
+        cenario_en = _CENARIO_EN.get(cenario, "white studio background, soft box lighting")
+        look_en = _LOOK_EN.get(look, "elegant outfit")
         return {
             "success": True,
             "legenda": (
@@ -116,9 +150,9 @@ class MaritacaClient:
                 f"#Semijoias #LuxoAcessivel #GlowStudioAI"
             ),
             "prompt_visual": (
-                "Elegant Brazilian woman, 28 years old, natural makeup, dark hair, "
-                "wearing a delicate 18k gold-plated semijoia necklace, white studio background, "
-                "professional soft-box lighting, photorealistic, 8k, commercial jewelry photography"
+                f"Elegant Brazilian woman, 28 years old, natural makeup, dark hair, "
+                f"wearing a delicate 18k gold-plated semijoia necklace, {look_en}, "
+                f"{cenario_en}, photorealistic, 8k, commercial jewelry photography"
             ),
         }
 

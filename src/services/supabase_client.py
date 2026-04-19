@@ -170,6 +170,63 @@ def save_generation(
         logger.error(f"Erro ao salvar geração: {e}")
         return {"success": False, "error": str(e)}
 
+def save_model_reference(model_id: str, nome: str, url: str) -> dict:
+    """Salva uma modelo de referência na tabela user_models."""
+    supabase = get_supabase_client()
+    if not supabase or not st.session_state.get("user_id"):
+        return {"success": False, "error": "Usuário não autenticado ou banco offline."}
+    try:
+        data = {
+            "id": model_id,
+            "user_id": st.session_state["user_id"],
+            "nome": nome,
+            "url": url,
+        }
+        res = supabase.table("user_models").upsert(data).execute()
+        if res.data:
+            logger.info(f"Modelo '{nome}' salva no Supabase ({model_id})")
+            return {"success": True}
+        return {"success": False, "error": "Falha ao salvar modelo."}
+    except Exception as e:
+        logger.error(f"Erro ao salvar modelo: {e}")
+        return {"success": False, "error": str(e)}
+
+
+def get_user_models() -> list:
+    """Retorna todas as modelos de referência do usuário logado."""
+    supabase = get_supabase_client()
+    if not supabase or not st.session_state.get("user_id"):
+        return []
+    try:
+        res = supabase.table("user_models")\
+            .select("id, nome, url, created_at")\
+            .eq("user_id", st.session_state["user_id"])\
+            .order("created_at", desc=False)\
+            .execute()
+        return res.data if res.data else []
+    except Exception as e:
+        logger.error(f"Erro ao carregar modelos: {e}")
+        return []
+
+
+def delete_model_reference(model_id: str) -> dict:
+    """Remove uma modelo de referência do banco."""
+    supabase = get_supabase_client()
+    if not supabase or not st.session_state.get("user_id"):
+        return {"success": False, "error": "Usuário não autenticado ou banco offline."}
+    try:
+        supabase.table("user_models")\
+            .delete()\
+            .eq("id", model_id)\
+            .eq("user_id", st.session_state["user_id"])\
+            .execute()
+        logger.info(f"Modelo {model_id} removida do Supabase")
+        return {"success": True}
+    except Exception as e:
+        logger.error(f"Erro ao deletar modelo: {e}")
+        return {"success": False, "error": str(e)}
+
+
 def get_user_history(limit: int = 20) -> list:
     """Recupera o histórico de gerações do usuário logado."""
     supabase = get_supabase_client()

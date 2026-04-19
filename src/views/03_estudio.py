@@ -64,12 +64,17 @@ if not st.session_state.get("imagens_geradas"):
     with st.status("🎨 Criando Visuais Exclusivos...", expanded=True) as status:
         from src.services.n8n_client import n8n_client
         
-        st.write("👗 Selecionando os melhores modelos de IA...")
+        modelo_url = st.session_state.get("modelo_referencia_url", "")
+        if modelo_url:
+            st.write("👤 Aplicando rosto da sua modelo de referência...")
+        else:
+            st.write("👗 Selecionando os melhores modelos de IA...")
         payload = {
             "prompt": st.session_state.get("prompt_visual", ""),
             "image_base64": st.session_state.get("uploaded_image_base64", ""),
+            "modelo_referencia_url": modelo_url,
             "objetivo": st.session_state.get("objetivo", ""),
-            "publico": st.session_state.get("publico", "")
+            "publico": st.session_state.get("publico", ""),
         }
         
         st.write("✨ Vestindo a modelo com sua joia...")

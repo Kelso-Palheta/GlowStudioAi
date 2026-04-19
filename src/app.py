@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT_DIR))
 import streamlit as st
 from src.config.settings import settings
 from src.config.theme import inject_custom_css
-from src.services.session_manager import init_session_state
+from src.services.session_manager import init_session_state, load_modelos_from_supabase
 from src.services.supabase_client import check_session
 from src.utils.logger import get_logger
 from src.components import render_sidebar_logo, render_sidebar_info, render_sidebar_menu
@@ -38,6 +38,8 @@ inject_custom_css()
 check_session()
 
 is_auth = st.session_state.get("is_authenticated", False)
+if is_auth:
+    load_modelos_from_supabase()
 
 pub_pages = [
     st.Page("views/home.py", title="Início", icon="💎", default=True),
@@ -45,9 +47,10 @@ pub_pages = [
 
 if is_auth:
     auth_pages = [
-        st.Page("views/01_configuracao.py", title="Configuração", icon="⚙️"),
-        st.Page("views/02_edicao.py", title="Curadoria", icon="✍️"),
-        st.Page("views/03_estudio.py", title="Estúdio Criativo", icon="🎨"),
+        st.Page("views/00_modelo.py", title="Minha Modelo", icon="👤"),
+        st.Page("views/01_configuracao.py", title="Showroom", icon="💎"),
+        st.Page("views/02_edicao.py", title="Direção de Arte", icon="🎬"),
+        st.Page("views/03_estudio.py", title="Estúdio Criativo", icon="✨"),
         st.Page("views/04_historico.py", title="Histórico de Joias", icon="📜"),
     ]
 else:
