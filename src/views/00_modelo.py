@@ -148,8 +148,9 @@ with st.expander("➕ Adicionar Nova Modelo", expanded=not modelos):
             ], key="new_modelo_altura")
         with col3:
             corpo = st.selectbox("Tipo de corpo", [
-                "Esguia / Magra", "Atlética / Definida", "Mediana / Natural",
-                "Curvilínea", "Plus Size", "Ampulheta",
+                "Esguia / Magra", "Tonificada / Academia leve",
+                "Atlética / Definida (academia)", "Musculosa / Muito definida",
+                "Mediana / Natural", "Curvilínea", "Plus Size", "Ampulheta",
             ], key="new_modelo_corpo")
             expressao = st.selectbox("Expressão", [
                 "Sorriso suave e elegante", "Olhar intenso e sofisticado",
@@ -213,6 +214,25 @@ with st.expander("➕ Adicionar Nova Modelo", expanded=not modelos):
 
         st.markdown("---")
 
+        # ── Estilo de Vida ──
+        st.markdown("**Estilo de Vida & Personalidade**")
+        col10, col11 = st.columns(2)
+        with col10:
+            estilo_vida = st.selectbox("Estilo de vida", [
+                "Sofisticada / Alto padrão", "Fitness / Academia",
+                "Executiva / Corporativa", "Boho / Natureza",
+                "Urbana / Moderna", "Romântica / Delicada",
+                "Esportiva / Ativa", "Artística / Criativa",
+            ], key="new_modelo_estilo_vida")
+        with col11:
+            personalidade = st.selectbox("Vibe / Personalidade", [
+                "Elegante e reservada", "Confiante e marcante",
+                "Alegre e acessível", "Misteriosa e sensual",
+                "Fresca e jovial", "Serena e minimalista",
+            ], key="new_modelo_personalidade")
+
+        st.markdown("---")
+
         nome_modelo = st.text_input(
             "Nome para identificar esta modelo",
             placeholder="Ex: Sofia — Modelo Principal",
@@ -225,6 +245,7 @@ with st.expander("➕ Adicionar Nova Modelo", expanded=not modelos):
             descricao = (
                 f"{etnia} woman, {idade_en}, {tom_pele.lower()} skin tone, "
                 f"{altura_en}, {corpo.lower()} body type, "
+                f"{estilo_vida.lower()} lifestyle, {personalidade.lower()} personality, "
                 f"{formato_rosto.lower()} face shape, {olhos_cor.lower()} {olhos_formato.lower()} eyes, "
                 f"{sobrancelhas.lower()} eyebrows, {labios.lower()} lips, "
                 f"{cabelo_comprimento.lower()} {cabelo_tipo.lower()} {cabelo_cor.lower()} hair, "
