@@ -71,9 +71,9 @@ def render_home():
     with col_btn:
         if st.button("✨ Começar Agora", type="primary", use_container_width=True):
             if st.session_state.get("is_authenticated"):
-                st.switch_page("src/views/01_configuracao.py")
+                st.switch_page("views/01_configuracao.py")
             else:
-                st.switch_page("src/views/login.py")
+                st.switch_page("views/login.py")
 
     # Footer
     st.markdown("<br><br>", unsafe_allow_html=True)

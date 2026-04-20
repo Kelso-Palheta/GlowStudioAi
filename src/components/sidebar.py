@@ -14,16 +14,9 @@ def render_sidebar_logo():
     )
 
 def render_sidebar_menu(pages):
-    """
-    Renderiza um menu de navegação manual usando st.page_link.
-    Garante que a ordem seja exatamente a definida no orquestrador.
-    """
+    """Renderiza menu de navegação na sidebar respeitando a ordem do orquestrador."""
     for page in pages:
-        # Pula páginas ocultas ou que não devam estar no menu manual
-        if page.title == "Oculto":
-            continue
-            
-        st.page_link(page, label=page.title, icon=page.icon)
+        st.page_link(page)
 
 def render_sidebar_info():
     """Renderiza os cards de status e missão."""

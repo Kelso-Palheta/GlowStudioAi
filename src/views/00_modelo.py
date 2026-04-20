@@ -245,6 +245,6 @@ if modelo_ativa_atual:
         st.success(f"**Modelo ativa:** {modelo_ativa_atual['nome']}")
     with col_btn:
         if st.button("Ir para Showroom →", type="primary", use_container_width=True, key="btn_ir_showroom"):
-            st.switch_page("src/views/01_configuracao.py")
+            st.switch_page("views/01_configuracao.py")
 else:
     st.caption("⬆️ Adicione e selecione uma modelo para continuar.")

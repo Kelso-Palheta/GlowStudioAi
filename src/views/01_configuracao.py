@@ -193,7 +193,7 @@ if has_uploaded_image() and st.session_state.get("objetivo") and st.session_stat
                 f"Imagem processada e avançando para Etapa 2. "
                 f"Objetivo: {st.session_state['objetivo']}"
             )
-            st.switch_page("src/views/02_edicao.py")
+            st.switch_page("views/02_edicao.py")
 
 else:
     # Checklist do que falta

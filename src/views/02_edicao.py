@@ -51,7 +51,7 @@ if not has_uploaded_image():
     )
     st.warning("⚠️ Nenhuma imagem carregada. Por favor, realize o upload no Showroom primeiro.")
     if st.button("← Ir para Upload", key="btn_back_to_t1"):
-        st.switch_page("src/views/01_configuracao.py")
+        st.switch_page("views/01_configuracao.py")
     st.stop()
 
 st.markdown(
@@ -207,7 +207,7 @@ col_back, col_spacer, col_next = st.columns([1, 2, 1])
 
 with col_back:
     if st.button("← Voltar", key="btn_back", use_container_width=True):
-        st.switch_page("src/views/01_configuracao.py")
+        st.switch_page("views/01_configuracao.py")
 
 with col_next:
     if st.button(
@@ -219,4 +219,4 @@ with col_next:
         st.session_state["texto_aprovado"] = True
         set_etapa(3)
         logger.info("Texto aprovado pelo usuário, avançando para geração de imagem")
-        st.switch_page("src/views/03_estudio.py")
+        st.switch_page("views/03_estudio.py")

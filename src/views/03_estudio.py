@@ -43,7 +43,7 @@ if not st.session_state.get("texto_aprovado"):
     )
     st.warning("⚠️ Nenhuma criação encontrada. Por favor, aprove as sugestões na etapa de Curadoria primeiro.")
     if st.button("← Ir para Curadoria", key="btn_back_to_t2"):
-        st.switch_page("src/views/02_edicao.py")
+        st.switch_page("views/02_edicao.py")
     st.stop()
 
 st.markdown(
@@ -229,7 +229,7 @@ col_back, col_spacer, col_new = st.columns([1, 2, 1])
 
 with col_back:
     if st.button("← Voltar para Edição", key="btn_back", use_container_width=True):
-        st.switch_page("src/views/02_edicao.py")
+        st.switch_page("views/02_edicao.py")
 
 with col_new:
     if st.button(
@@ -240,4 +240,4 @@ with col_new:
     ):
         reset_session()
         logger.info("Sessão resetada — nova geração iniciada")
-        st.switch_page("src/views/01_configuracao.py")
+        st.switch_page("views/01_configuracao.py")

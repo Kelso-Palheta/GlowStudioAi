@@ -26,7 +26,7 @@ def render_historico_page():
     if not history:
         st.info("Você ainda não possui gerações no seu histórico. Comece sua primeira curadoria!")
         if st.button("✨ Iniciar Agora", type="primary"):
-            st.switch_page("src/views/01_configuracao.py")
+            st.switch_page("views/01_configuracao.py")
         return
 
     # Filtros e Estatísticas Rápidas
