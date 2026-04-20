@@ -127,46 +127,110 @@ with st.expander("➕ Adicionar Nova Modelo", expanded=not modelos):
     with tab_gerar:
         st.markdown("#### Descreva a modelo ideal para sua marca")
 
-        col_form, col_prev = st.columns([1, 1], gap="large")
+        # ── Características Essenciais ──
+        st.markdown("**Características Essenciais**")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            etnia = st.selectbox("Aparência / Etnia", [
+                "Brasileira morena", "Brasileira loira", "Afro-brasileira",
+                "Latina", "Europeia", "Asiática", "Árabe", "Mediterrânea",
+            ], key="new_modelo_etnia")
+            tom_pele = st.selectbox("Tom de pele", [
+                "Clara", "Morena clara", "Morena", "Morena escura", "Negra",
+            ], key="new_modelo_tom_pele")
+        with col2:
+            idade = st.selectbox("Faixa etária", [
+                "18-22 anos", "22-27 anos", "27-32 anos", "32-38 anos", "38-45 anos",
+            ], key="new_modelo_idade")
+            altura = st.selectbox("Altura / Porte", [
+                "Baixa e delicada (1,55–1,60)", "Média (1,60–1,68)",
+                "Alta (1,68–1,75)", "Alta e esguia (1,75+)",
+            ], key="new_modelo_altura")
+        with col3:
+            corpo = st.selectbox("Tipo de corpo", [
+                "Esguia / Magra", "Atlética / Definida", "Mediana / Natural",
+                "Curvilínea", "Plus Size", "Ampulheta",
+            ], key="new_modelo_corpo")
+            expressao = st.selectbox("Expressão", [
+                "Sorriso suave e elegante", "Olhar intenso e sofisticado",
+                "Expressão natural e serena", "Sorriso amplo e alegre",
+                "Olhar sensual", "Pose editorial séria",
+            ], key="new_modelo_expressao")
 
-        with col_form:
-            etnia = st.selectbox(
-                "Aparência",
-                ["Brasileira morena", "Brasileira loira", "Afro-brasileira",
-                 "Latina", "Europeia", "Asiática"],
-                key="new_modelo_etnia",
-            )
-            idade = st.selectbox(
-                "Faixa etária",
-                ["20-25 anos", "25-30 anos", "30-35 anos", "35-40 anos"],
-                key="new_modelo_idade",
-            )
-            cabelo = st.selectbox(
-                "Cabelo",
-                ["Liso escuro", "Liso loiro", "Cacheado natural", "Crespo", "Ondulado castanho"],
-                key="new_modelo_cabelo",
-            )
-            expressao = st.selectbox(
-                "Expressão",
-                ["Sorriso suave e elegante", "Olhar intenso e sofisticado",
-                 "Expressão natural e serena", "Sorriso amplo e alegre"],
-                key="new_modelo_expressao",
-            )
-            nome_modelo = st.text_input(
-                "Nome para identificar",
-                placeholder="Ex: Sofia — Modelo Principal",
-                key="new_modelo_nome_ia",
-            )
+        st.markdown("---")
 
-        with col_prev:
-            st.info("💡 A modelo gerada será um retrato profissional em fundo branco neutro.")
+        # ── Rosto ──
+        st.markdown("**Detalhes do Rosto**")
+        col4, col5, col6 = st.columns(3)
+        with col4:
+            formato_rosto = st.selectbox("Formato do rosto", [
+                "Oval", "Redondo", "Coração", "Quadrado", "Longo / Fino",
+            ], key="new_modelo_rosto")
+            labios = st.selectbox("Lábios", [
+                "Naturais e finos", "Médios", "Carnudos / Volumosos",
+                "Boca larga e sensual",
+            ], key="new_modelo_labios")
+        with col5:
+            olhos_cor = st.selectbox("Cor dos olhos", [
+                "Castanhos escuros", "Castanhos claros", "Pretos",
+                "Verdes", "Azuis", "Mel / Âmbar", "Cinza",
+            ], key="new_modelo_olhos_cor")
+            olhos_formato = st.selectbox("Formato dos olhos", [
+                "Amendoado", "Grandes e expressivos", "Pequenos e delicados",
+                "Felinos / Puxados",
+            ], key="new_modelo_olhos_formato")
+        with col6:
+            sobrancelhas = st.selectbox("Sobrancelhas", [
+                "Finas e arqueadas", "Médias naturais", "Grossas e marcadas",
+                "Retas e modernas",
+            ], key="new_modelo_sobrancelhas")
+            maquiagem = st.selectbox("Maquiagem", [
+                "Sem maquiagem / Natural", "Leve e luminosa",
+                "Elegante / Clássica", "Dramática / Marcada",
+                "Smoky eye sofisticado",
+            ], key="new_modelo_maquiagem")
+
+        st.markdown("---")
+
+        # ── Cabelo ──
+        st.markdown("**Cabelo**")
+        col7, col8, col9 = st.columns(3)
+        with col7:
+            cabelo_cor = st.selectbox("Cor do cabelo", [
+                "Preto", "Castanho escuro", "Castanho claro", "Loiro dourado",
+                "Loiro platinado", "Ruivo", "Mechas / Balayage", "Colorido",
+            ], key="new_modelo_cabelo_cor")
+        with col8:
+            cabelo_tipo = st.selectbox("Tipo / Textura", [
+                "Liso e sedoso", "Liso e volumoso", "Ondulado",
+                "Cacheado", "Crespo / Afro", "Enrolado tight",
+            ], key="new_modelo_cabelo_tipo")
+        with col9:
+            cabelo_comprimento = st.selectbox("Comprimento", [
+                "Curto (pixie/bob)", "Médio (até o ombro)",
+                "Longo (até o peito)", "Muito longo (abaixo da cintura)",
+            ], key="new_modelo_cabelo_comprimento")
+
+        st.markdown("---")
+
+        nome_modelo = st.text_input(
+            "Nome para identificar esta modelo",
+            placeholder="Ex: Sofia — Modelo Principal",
+            key="new_modelo_nome_ia",
+        )
 
         if st.button("✨ Gerar Modelo com IA", type="primary", key="btn_gerar_nova_modelo"):
+            idade_en = idade.split(" ")[0].replace("-", " to ") + " years old"
+            altura_en = altura.split("(")[0].strip().lower()
             descricao = (
-                f"{etnia} woman, {idade.replace(' anos', ' years old')}, "
-                f"{cabelo.lower()} hair, {expressao.lower()}, "
-                "professional headshot portrait, white background, "
-                "photorealistic, 8k, commercial photography, sharp focus"
+                f"{etnia} woman, {idade_en}, {tom_pele.lower()} skin tone, "
+                f"{altura_en}, {corpo.lower()} body type, "
+                f"{formato_rosto.lower()} face shape, {olhos_cor.lower()} {olhos_formato.lower()} eyes, "
+                f"{sobrancelhas.lower()} eyebrows, {labios.lower()} lips, "
+                f"{cabelo_comprimento.lower()} {cabelo_tipo.lower()} {cabelo_cor.lower()} hair, "
+                f"{maquiagem.lower()}, {expressao.lower()}, "
+                "professional headshot portrait, white studio background, "
+                "photorealistic, 8k, commercial jewelry photography, sharp focus"
             )
             with st.spinner("🎨 Criando sua modelo exclusiva..."):
                 from src.services.fal_client import fal_client
@@ -174,15 +238,12 @@ with st.expander("➕ Adicionar Nova Modelo", expanded=not modelos):
 
             if result.get("success") and result.get("images"):
                 url = result["images"][0]["url"]
-                nome = nome_modelo or f"{etnia}, {idade}"
+                nome = nome_modelo or f"{etnia}, {cabelo_cor.lower()}, {idade}"
                 new_id = add_modelo_referencia(nome, url)
-
-                # Persiste no Supabase se autenticado
                 if st.session_state.get("user_id"):
                     from src.services.supabase_client import save_model_reference
                     save_model_reference(new_id, nome, url)
-
-                logger.info(f"Nova modelo gerada e salva: {nome}")
+                logger.info(f"Nova modelo gerada: {nome}")
                 st.success(f"✅ **{nome}** criada e definida como ativa!")
                 st.rerun()
             else:
